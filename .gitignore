@@ -216,3 +216,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project-specific
+.claude/
+graphify-out/
+CLAUDE.md
+data/
+*.ckpt
+*.pt
