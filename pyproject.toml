@@ -1,6 +1,18 @@
+[project]
+name = "papers-from-scratch"
+version = "0.0.0"
+requires-python = ">=3.11"
+
 [tool.uv.workspace]
 members = ["*"]
+exclude = ["graphify-out", "scripts"]
 
 [tool.pytest.ini_options]
 testpaths = ["."]
 python_files = ["test_*.py"]
+tdd_guard_project_root = "/Users/ahad/Library/Projects/Papers-From-Scratch"
+
+[dependency-groups]
+dev = [
+    "tdd-guard-pytest>=0.1.2",
+]

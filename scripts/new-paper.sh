@@ -8,14 +8,21 @@ if [[ $# -ne 1 ]]; then
 fi
 
 SLUG="$1"
-DIR="$(cd "$(dirname "$0")/.." && pwd)/$SLUG"
+
+if [[ ! "$SLUG" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+  echo "Error: slug must be kebab-case (e.g. attention-is-all-you-need)"
+  exit 1
+fi
+
+REPO="$(cd "$(dirname "$0")/.." && pwd)"
+DIR="$REPO/$SLUG"
 
 if [[ -d "$DIR" ]]; then
   echo "Error: $SLUG already exists"
   exit 1
 fi
 
-mkdir -p "$DIR"
+mkdir -p "$DIR" "$DIR/data"
 
 cat > "$DIR/PAPER.md" << 'EOF'
 # <Title>
