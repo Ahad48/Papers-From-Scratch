@@ -22,7 +22,7 @@ if [[ -d "$DIR" ]]; then
   exit 1
 fi
 
-mkdir -p "$DIR" "$DIR/data"
+mkdir -p "$DIR/Code" "$DIR/Outputs" "$DIR/Data" "$DIR/Tests"
 
 cat > "$DIR/PAPER.md" << 'EOF'
 # <Title>
@@ -60,15 +60,27 @@ dependencies = []
 EOF
 
 touch "$DIR/__init__.py"
+touch "$DIR/Code/__init__.py"
 
-cat > "$DIR/test_placeholder.py" << EOF
+cat > "$DIR/conftest.py" << 'EOF'
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent / "Code"))
+EOF
+
+cat > "$DIR/Tests/test_placeholder.py" << EOF
 def test_placeholder():
     pass
 EOF
 
 echo "Created $SLUG/"
-echo "  PAPER.md       <- fill in paper metadata"
-echo "  RESULTS.md     <- fill in after running experiments"
-echo "  pyproject.toml <- add dependencies"
+echo "  PAPER.md           <- fill in paper metadata"
+echo "  RESULTS.md         <- fill in after running experiments"
+echo "  pyproject.toml     <- add dependencies"
 echo "  __init__.py"
-echo "  test_placeholder.py"
+echo "  conftest.py        <- adds Code/ to sys.path"
+echo "  Code/__init__.py"
+echo "  Code/              <- implementation goes here"
+echo "  Outputs/           <- plots, checkpoints, notebooks"
+echo "  Data/              <- datasets"
+echo "  Tests/test_placeholder.py"

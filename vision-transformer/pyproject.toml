@@ -2,4 +2,4 @@
 name = "vision-transformer"
 version = "0.1.0"
 requires-python = ">=3.11"
-dependencies = ["torch>=2.0"]
+dependencies = ["torch>=2.0", "Pillow>=10.0", "matplotlib>=3.7"]
