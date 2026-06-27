@@ -224,3 +224,14 @@ CLAUDE.md
 data/
 *.ckpt
 *.pt
+vision-transformer/Code/Datasets/cifar10/cifar-10-python.tar.gz
+vision-transformer/Code/Datasets/cifar10/cifar-10-python.tar.gz
+Datasets/cifar10/cifar-10-python.tar.gz
+Datasets/cifar10/cifar-10-batches-py/batches.meta
+Datasets/cifar10/cifar-10-batches-py/data_batch_1
+Datasets/cifar10/cifar-10-batches-py/data_batch_2
+Datasets/cifar10/cifar-10-batches-py/data_batch_3
+Datasets/cifar10/cifar-10-batches-py/data_batch_4
+Datasets/cifar10/cifar-10-batches-py/data_batch_5
+Datasets/cifar10/cifar-10-batches-py/readme.html
+Datasets/cifar10/cifar-10-batches-py/test_batch

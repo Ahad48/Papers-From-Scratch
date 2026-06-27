@@ -42,7 +42,7 @@ def test_multihead_attention_invalid_heads_raises():
 
 def test_transformer_block_output_shape():
     """residual path: (B, N, D) in -> (B, N, D) out"""
-    block = TransformerBlock(embed_dim=64, num_heads=4, mlp_ratio=4.0)
+    block = TransformerBlock(embed_dim=64, num_heads=4, mlp_ratio=4)
     x = torch.zeros(2, 10, 64)
     out = block(x)
     assert out.shape == (2, 10, 64)
@@ -52,7 +52,7 @@ def test_vit_output_shape():
     """minimal config: (B, C, H, W) -> (B, num_classes)"""
     model = VisionTransformer(
         img_size=32, patch_size=4, in_channels=3, num_classes=10,
-        embed_dim=64, depth=2, num_heads=4, mlp_ratio=4.0,
+        embed_dim=64, depth=2, num_heads=4, mlp_ratio=4,
     )
     x = torch.zeros(2, 3, 32, 32)
     out = model(x)
@@ -63,7 +63,7 @@ def test_vit_b16_config():
     """ViT-B/16 paper config (Table 1): embed=768, depth=12, heads=12"""
     model = VisionTransformer(
         img_size=224, patch_size=16, in_channels=3, num_classes=1000,
-        embed_dim=768, depth=12, num_heads=12, mlp_ratio=4.0,
+        embed_dim=768, depth=12, num_heads=12, mlp_ratio=4,
     )
     x = torch.zeros(1, 3, 224, 224)
     out = model(x)
@@ -74,7 +74,7 @@ def test_vit_batch_size_one():
     """single-image batch still produces correct output shape"""
     model = VisionTransformer(
         img_size=32, patch_size=4, in_channels=3, num_classes=10,
-        embed_dim=64, depth=2, num_heads=4, mlp_ratio=4.0,
+        embed_dim=64, depth=2, num_heads=4, mlp_ratio=4,
     )
     x = torch.zeros(1, 3, 32, 32)
     out = model(x)
