@@ -7,6 +7,7 @@ Implementing ML/AI research papers from scratch in Python.
 | Slug | Title | Year | Status |
 |------|-------|------|--------|
 | [vision-transformer](vision-transformer/) | An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale | 2020 | In Progress |
+| [dqn](dqn/) | Playing Atari with Deep Reinforcement Learning | 2013 | In Progress |
 
 ## Structure
 
@@ -20,7 +21,9 @@ Each paper lives in its own directory:
 ├── conftest.py
 ├── __init__.py
 ├── Code/
-└── Tests/
+├── Tests/
+├── Data/
+└── Outputs/
 ```
 
 **Naming:** kebab-case. Add year suffix when names collide (`resnet-2015` vs `resnet-v2-2016`).
