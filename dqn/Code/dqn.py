@@ -21,7 +21,6 @@ class QNetwork(nn.Module):
 
     def __init__(self, obs_dim: int, n_actions: int, hidden_dim: int = 128):
         super().__init__()
-        # TODO: Section 4.1 — two hidden layers, ReLU activations
         self.net = nn.Sequential(
             nn.Linear(obs_dim, hidden_dim),
             nn.ReLU(),
@@ -62,10 +61,10 @@ class ReplayBuffer:
         states, actions, rewards, next_states, dones = zip(*batch)
         return (
             torch.stack(states),
-            torch.tensor(actions),
-            torch.tensor(rewards),
+            torch.tensor(actions, dtype=torch.long),
+            torch.tensor(rewards, dtype=torch.float32),
             torch.stack(next_states),
-            torch.tensor(dones),
+            torch.tensor(dones, dtype=torch.float32),
         )
 
     def __len__(self) -> int:
@@ -93,12 +92,22 @@ class DQNAgent:
         batch_size: int = 64,
         target_update_freq: int = 1_000,  # steps between target network syncs
         hidden_dim: int = 128,
+        device: torch.device = torch.device("cpu")
     ):
-        self.online_net = QNetwork(obs_dim, n_actions, hidden_dim)
-        self.target_net = QNetwork(obs_dim, n_actions, hidden_dim)
+        self.online_net = QNetwork(obs_dim, n_actions, hidden_dim).to(device)
+        self.target_net = QNetwork(obs_dim, n_actions, hidden_dim).to(device)
         self.optimizer = torch.optim.Adam(self.online_net.parameters(), lr=lr)
         self.replay_buffer = ReplayBuffer(buffer_capacity)
         self.step_counter = 0
+        self.gamma = gamma
+        self.epsilon_start = epsilon_start
+        self.epsilon_end = epsilon_end
+        self.epsilon_decay = epsilon_decay
+        self.epsilon = epsilon_start
+        self.n_actions = n_actions
+        self.batch_size = batch_size
+        self.target_update_freq = target_update_freq
+        self.device = device
 
     def select_action(self, state: torch.Tensor) -> int:
         """Epsilon-greedy action selection. Algorithm 1, line 7-8."""
@@ -117,8 +126,30 @@ class DQNAgent:
 
         TD target: r + gamma * max_a' Q_target(s', a')  (0 if done)
         """
-        raise NotImplementedError
+        td_target = None
+        if len(self.replay_buffer) < self.batch_size:
+            return td_target  # not enough samples to update
+        else:
+            states, actions, rewards, next_states, dones = self.replay_buffer.sample(self.batch_size)
+            states = states.to(self.device)
+            actions = actions.to(self.device)
+            rewards = rewards.to(self.device)
+            next_states = next_states.to(self.device)
+            dones = dones.to(self.device)
+
+            td_target = rewards + self.gamma * (1 - dones) * self.target_net(next_states).max(dim=1).values
+            q_values = self.online_net(states).gather(1, actions.unsqueeze(1)).squeeze(1)
+            loss = nn.functional.mse_loss(q_values, td_target.detach())
+            self.optimizer.zero_grad()
+            loss.backward()
+            self.optimizer.step()
+
+            self.step_counter += 1
+            self.epsilon = max(self.epsilon_end, self.epsilon_start - (self.step_counter / self.epsilon_decay) * (self.epsilon_start - self.epsilon_end))
+            self.sync_target()  # update target network if needed
+            return loss.item()
 
     def sync_target(self) -> None:
         """Copy online network weights to target network. Algorithm 1, line 10."""
-        raise NotImplementedError
+        if self.step_counter % self.target_update_freq == 0:
+            self.target_net.load_state_dict(self.online_net.state_dict())
