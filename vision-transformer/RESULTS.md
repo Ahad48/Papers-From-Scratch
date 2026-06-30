@@ -26,14 +26,18 @@
 
 **ViT**
 ```
-img_size    = 32   (CIFAR-10 height)
-patch_size  = 4
-in_channels = 3
-num_classes = 10
-embed_dim   = 256
-depth       = 5
-num_heads   = 8
-mlp_ratio   = 4
+img_size      = 32   (CIFAR-10 height)
+patch_size    = 4
+in_channels   = 3
+num_classes   = 10
+embed_dim     = 256
+depth         = 5
+num_heads     = 8
+mlp_ratio     = 4
+kfold_splits  = 3
+batch_size    = 256
+epochs        = 10
+lr            = 1e-3
 ```
 
 **CNN**
@@ -46,6 +50,10 @@ stride             = 1
 padding            = 1
 conv1_out_channels = 32
 conv2_out_channels = 64
+kfold_splits       = 3
+batch_size         = 256
+epochs             = 10
+lr                 = 1e-3
 ```
 
 ## Notes

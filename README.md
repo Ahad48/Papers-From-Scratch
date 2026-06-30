@@ -6,7 +6,7 @@ Implementing ML/AI research papers from scratch in Python.
 
 | Slug | Title | Year | Status |
 |------|-------|------|--------|
-| [vision-transformer](vision-transformer/) | An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale | 2020 | In Progress |
+| [vision-transformer](vision-transformer/) | An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale | 2020 | Complete — test acc 62.4% (ViT) vs 70.1% (CNN baseline) on CIFAR-10 |
 | [dqn](dqn/) | Playing Atari with Deep Reinforcement Learning | 2013 | In Progress |
 
 ## Structure
